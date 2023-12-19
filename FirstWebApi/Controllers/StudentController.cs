@@ -1,5 +1,6 @@
 ﻿using FirstWebApi.Data;
 using FirstWebApi.Model;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FirstWebApi.Controllers
@@ -27,12 +28,26 @@ namespace FirstWebApi.Controllers
             {
                 return BadRequest();
             }
-            var student = StudentStore.studentList.FirstOrDefault(x => x.Id == id);
-            if(student == null)
+            if(StudentStore.studentList.Where(x => x.Id == id).Any())
+            {
+                var student = StudentStore.studentList.Where(x => x.Id == id).FirstOrDefault();
+                if(student == null)
+                {
+                    return NotFound();
+                }
+                var studentData = new StudentData
+                {
+                    Name = student.Name,
+                    Age = student.Age,
+                    PhoneNumber = student.PhoneNo
+                };
+                return Ok(studentData);
+            }
+            else
             {
                 return NotFound();
             }
-            return Ok(student);
+            
         }
 
         [HttpGet("name:alpha", Name = "GetStudentByName")]
@@ -45,13 +60,26 @@ namespace FirstWebApi.Controllers
             {
                 return BadRequest();
             }
-            var student = StudentStore.studentList.FirstOrDefault(x => x.Name == name);
-            if (student == null)
+            
+            if (StudentStore.studentList.Where(x => x.Name.ToLower() == name.ToLower()).Any())
+            {
+                var student = StudentStore.studentList.FirstOrDefault(x => x.Name.ToLower() == name.ToLower());
+                if (student == null)
+                {
+                    return NotFound();
+                }
+                var studentData = new StudentData
+                {
+                    Name = student.Name,
+                    Age = student.Age,
+                    PhoneNumber = student.PhoneNo
+                };
+                return Ok(studentData);
+            }
+            else
             {
                 return NotFound();
             }
-
-            return Ok(student);
         }
 
         [HttpPost]
@@ -66,6 +94,11 @@ namespace FirstWebApi.Controllers
             if (student.Id > 0)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            if(student.Age == 15 || student.Age == 16)
+            {
+                ModelState.AddModelError("Not Accepted", "We don't accept this age");
+                return BadRequest(ModelState);
             }
             student.Id = StudentStore.studentList.OrderByDescending(x => x.Id).FirstOrDefault().Id + 1;
             StudentStore.studentList.Add(student);
