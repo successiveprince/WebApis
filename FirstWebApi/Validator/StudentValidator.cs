@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FirstWebApi.Validator
 {
-    public class CustomerValidator : AbstractValidator<Student>
+    public class StudentValidator : AbstractValidator<Student>
     {
-        public CustomerValidator()
+        public StudentValidator()
         {
             RuleFor(c => c.Name)
                 .NotEmpty().WithMessage("Please enter a name")
