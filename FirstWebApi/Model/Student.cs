@@ -9,7 +9,7 @@ namespace FirstWebApi.Model
         [ValidateNever]
         public int Id { get; set; }
 
-        [StringLength(20 , ErrorMessage = "Name should be less than 20 characters.")]
+        //[StringLength(20 , ErrorMessage = "Name should be less than 20 characters.")]
         public string Name { get; set; }
 
         [Range(12 , 20)]
