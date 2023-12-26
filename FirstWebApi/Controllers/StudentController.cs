@@ -10,10 +10,17 @@ namespace FirstWebApi.Controllers
     [Route("api/Student")]
     public class StudentController : ControllerBase
     {
+        private readonly ILogger<StudentController> _logger;
+        public StudentController(ILogger<StudentController> logger)
+        {
+            _logger = logger;
+        }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<Student>> GetStudent()
         {
+            _logger.LogInformation("Get all Students");
             return Ok(StudentStore.studentList);
         }
 
@@ -33,6 +40,7 @@ namespace FirstWebApi.Controllers
                 var student = StudentStore.studentList.Where(x => x.Id == id).FirstOrDefault();
                 if(student == null)
                 {
+                   
                     return NotFound();
                 }
                 var studentData = new StudentData
@@ -89,6 +97,7 @@ namespace FirstWebApi.Controllers
         {
             if (student == null)
             {
+                _logger.LogInformation("Student is null");
                 return BadRequest(student);
             }
             if (student.Id > 0)
@@ -102,6 +111,7 @@ namespace FirstWebApi.Controllers
             }
             student.Id = StudentStore.studentList.OrderByDescending(x => x.Id).FirstOrDefault().Id + 1;
             StudentStore.studentList.Add(student);
+            
 
             return CreatedAtRoute("GetStudent", new { id = student.Id }, student);
         }

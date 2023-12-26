@@ -12,8 +12,8 @@ namespace FirstWebApi.Model
         //[StringLength(20 , ErrorMessage = "Name should be less than 20 characters.")]
         public string Name { get; set; }
 
-        [Range(12 , 20)]
-        [AgeValidator(ErrorMessage = "Age is not valid")]
+        //[Range(12 , 20)]
+       // [AgeValidator(ErrorMessage = "Age is not valid")]
         public int Age { get; set; }    
 
         [StringLength(10 , ErrorMessage = "Incorrect Phone Number.")]

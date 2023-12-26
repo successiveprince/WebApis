@@ -10,7 +10,14 @@ namespace FirstWebApi.Validator
             RuleFor(c => c.Name)
                 .NotEmpty().WithMessage("Please enter a name")
                 .Length(0, 10).WithMessage("Name length should be between 0 and 10 characters");
+
+            RuleFor(s => s.Age)
+                .LessThanOrEqualTo(20).WithMessage("The age should be less than 20");
+
+
         }
+
+
     }
 }
 
