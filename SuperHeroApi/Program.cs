@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using SuperHeroApi.Data;
 using SuperHeroApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +10,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<SuperHeroDb>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SuperHeroConnectionString")));
+
 builder.Services.AddScoped<ISuperHeroServices, SuperHeroServices>();
+builder.Services.AddScoped<IHeroPlacesServices, HeroPlacesServices>();
 
 var app = builder.Build();
 

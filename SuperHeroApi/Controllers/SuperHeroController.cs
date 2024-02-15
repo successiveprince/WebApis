@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SuperHeroApi.Data;
 using SuperHeroApi.Models;
 using SuperHeroApi.Services;
 
@@ -10,9 +11,11 @@ namespace SuperHeroApi.Controllers
     public class SuperHeroController : ControllerBase
     {
         private readonly ISuperHeroServices _superHeroServices;
-        public SuperHeroController(ISuperHeroServices superHeroServices)
+        private readonly SuperHeroDb _context;
+        public SuperHeroController(ISuperHeroServices superHeroServices , SuperHeroDb context)
         {
             _superHeroServices = superHeroServices;
+            _context = context;
         }
 
         [HttpGet]
@@ -24,7 +27,7 @@ namespace SuperHeroApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<SuperHero>> GetOneHero(int id)
         {
-            var result = _superHeroServices.GetOneHero(id);
+            var result = await _superHeroServices.GetOneHero(id);
 
             if(result == null)
             {
@@ -35,7 +38,17 @@ namespace SuperHeroApi.Controllers
         [HttpPost]
         public async Task<ActionResult<List<SuperHero>>> AddHero(SuperHero hero)
         {
-            var result = _superHeroServices.AddHero(hero);
+            var result = await _superHeroServices.AddHero(hero);
+
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<List<Places>>> UpdateHero(int id, SuperHero hero)
+        {
+            var result = await _superHeroServices.UpdateHero(id, hero);
+            if (result == null)
+                return NotFound("Hero not found!!!");
 
             return Ok(result);
         }

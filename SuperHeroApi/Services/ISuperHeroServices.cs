@@ -7,6 +7,8 @@ namespace SuperHeroApi.Services
     {
         Task<ActionResult<List<SuperHero>>> GetAllHeroes();
         Task<ActionResult<SuperHero>> GetOneHero(int id);
-        Task<ActionResult<List<SuperHero>>> AddHero(SuperHero hero);
+        Task<SuperHero> AddHero(SuperHero hero);
+        Task<SuperHero> UpdateHero(int id , SuperHero hero);
+        
     }
 }
