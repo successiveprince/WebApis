@@ -6,7 +6,7 @@ using SuperHeroApi.Services;
 
 namespace SuperHeroApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class HeroPlacesController : ControllerBase
     {
@@ -30,7 +30,7 @@ namespace SuperHeroApi.Controllers
         {
             var result = await _heroplaces.GetOnePlace(id);
             if(result == null)
-                  return NotFound();
+                  return NotFound("Place not found!!!");
             return Ok(result);
         }
 

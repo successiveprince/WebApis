@@ -69,6 +69,15 @@ namespace SuperHeroApi.Services
             return hero;
         }
 
+        public async Task<SuperHero> DeleteHero(int id)
+        {
+            var hero = _context.SuperHeroes.Find(id);
+            if (hero == null)
+                return null;
+            _context.SuperHeroes.Remove(hero);
+            await _context.SaveChangesAsync();
+            return hero;
+        }
 
     }
 }
